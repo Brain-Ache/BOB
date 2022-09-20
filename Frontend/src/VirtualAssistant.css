@@ -1,0 +1,175 @@
+.virtualAssistantContainer {
+  width: 370px;
+  height: 560px;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  right: 0;
+  overflow: hidden;
+  padding: 1.75rem;
+}
+.virtualAssistant {
+  width: 300px;
+  height: 500px;
+  /* box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px; */
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border: 1px solid rgba(100, 100, 111, 0.2);
+  padding: 0.9rem 10px;
+  border-radius: 10px;
+  display: flex;
+  z-index: 1;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.assistantBackButtonContainer {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+}
+.assistantBackButton {
+  background-color: white;
+  border: 0;
+  color: rgba(0, 0, 0, 0.6);
+  padding: 0;
+  cursor: pointer;
+}
+.textInputContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  padding-top: 10px;
+  gap: 10px;
+}
+.textInput {
+  background-color: aquamarine;
+  border-radius: 50px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  background-color: #eef1ff;
+  height: 100%;
+}
+.textInput > input {
+  border: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0 5px;
+  margin-left: 10px;
+  font-family: "Montserrat", sans-serif;
+  background-color: transparent;
+}
+.textInput > input:focus {
+  outline: 0;
+}
+.textInput > svg {
+  margin-right: 10px;
+  color: #25316d98;
+  cursor: pointer;
+}
+.textMessageSpace {
+  overflow-y: scroll;
+  padding-bottom: 10px;
+}
+.textMessageSpace::-webkit-scrollbar {
+  width: 5px;
+}
+
+.textMessageSpace::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.textMessageSpace::-webkit-scrollbar-thumb {
+  background: rgba(95, 95, 95, 0.267);
+  border-radius: 4px;
+}
+
+.textMessageSpace::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.messageAction > button {
+  width: 50px;
+  height: 50px;
+  background-image: linear-gradient(to right, #b1b2ff, #aac4ff) !important;
+  box-shadow: rgb(0 0 0 / 18%) 1px 7px 20px !important;
+}
+.textMessages {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-top: 10px;
+}
+
+.textMessages .userMessage {
+  display: flex;
+  justify-content: end;
+  width: 100%;
+  margin: 5px 0;
+}
+.textMessages .assistantMessage {
+  display: flex;
+  justify-content: start;
+  margin: 5px 0;
+  overflow: hidden;
+  width: 100%;
+  animation: moveRight 0.2s ease forwards;
+}
+
+.userMessage .message {
+  background-color: #eef1ff;
+  padding: 7px 10px;
+  border-radius: 10px;
+  border-bottom-right-radius: 0px;
+}
+.assistantMessage .message {
+  background-color: #d2daff;
+  padding: 7px 10px;
+  border-radius: 10px;
+  border-bottom-left-radius: 0px;
+}
+.assistantMessage::after {
+  content: "";
+  margin-right: 10px;
+}
+.userMessage::before {
+  content: "";
+  margin-left: 10px;
+}
+.messageInstruction {
+  text-align: center;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.7);
+  margin-top: 5px;
+}
+
+.languageSelector {
+  font-family: "Montserrat", sans-serif !important;
+  padding: 0 5px !important;
+  width: 200px !important;
+}
+.languageSelectContainer > div {
+  margin-top: -15px;
+  font-family: "Montserrat", sans-serif !important;
+}
+.languageSelectContainer label {
+  font-family: "Montserrat", sans-serif !important;
+  padding: 0 !important;
+}
+@keyframes moveRight {
+  0% {
+    transform: translate(-20px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(0px);
+    opacity: 1;
+  }
+}

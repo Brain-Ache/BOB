@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap");
+
+.App {
+  font-family: "Montserrat", sans-serif !important;
+}
+.trigger-assistant {
+  border: 0 !important;
+  width: 70px !important;
+  height: 70px !important;
+  border-radius: 50% !important;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+  font-weight: 500 !important;
+  background-image: linear-gradient(to right, #b1b2ff, #aac4ff) !important;
+  color: white !important;
+  transition: all 0.3s ease !important;
+  opacity: 1;
+  position: absolute !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  margin: 1.75rem !important;
+  z-index: -1;
+  /* font-family: "Montserrat",  sans-serif !important; */
+}
+.trigger-assistant:hover {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.trigger-assistant svg {
+  transform: scale(1);
+}
+lottie-player {
+  width: 100px;
+}
