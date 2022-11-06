@@ -4,7 +4,7 @@ import { Fab, Fade } from "@mui/material";
 import { useState } from "react";
 import VirtualAssistant from "./VirtualAssistant";
 function App() {
-  const [clickedAssistant, setClickedAssistant] = useState(false);
+  const [clickedAssistant, setClickedAssistant] = useState(true);
   const onClickVirtualAssistant = () => {
     setClickedAssistant(true);
   };

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useRef } from "react";
 import "./VirtualAssistant.css";
 import SendIcon from "@mui/icons-material/Send";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -13,12 +13,14 @@ import {
 } from "@mui/material";
 import MicIcon from "@mui/icons-material/Mic";
 import StopIcon from "@mui/icons-material/Stop";
+import NotificationAudio from "./assets/mixkit-sci-fi-click-900.wav";
+import { questions } from "./questions";
 const API = window.SpeechRecognition || window.webkitSpeechRecognition;
 const Recognition = new API();
 Recognition.continous = true;
 Recognition.continuous = true;
 Recognition.long = "en-GB";
-
+const synth = window.speechSynthesis;
 export default function VirtualAssistant({
   clickedAssistant,
   onCloseAssistant,
@@ -27,7 +29,7 @@ export default function VirtualAssistant({
   const [language, setLanguage] = React.useState();
   const [messageInput, setMessageInput] = React.useState("");
   const [isListening, setIsListening] = React.useState(false);
-  console.log(Recognition);
+  const audioRef = useRef();
   useEffect(() => {
     if (isListening) {
       Recognition.onresult = (event) => {
@@ -64,61 +66,60 @@ export default function VirtualAssistant({
       setMessageInput("");
       const input = messageInput.toLowerCase();
       let assistantMessage = "";
-      if (input.includes("bob"))
-        assistantMessage =
-          "Hi, this is your personal assistant BOB the explorer 😁";
-      else if (input.includes("loan"))
-        assistantMessage = (
-          <Fragment>
-            <strong>Requirements for digital personal loan:</strong>
-            <br />
-            <br />
-            <strong>1.</strong> valid mobile number.
-            <br />
-            <strong>2.</strong> aadhar number connected with mobile number.
-            <br />
-            <strong>3.</strong> valid pan number.
-            <br />
-            <strong>4.</strong> net banking credentials or digital bank
-            statement for last 6 months.
-            <br />
-            <strong>5.</strong> web - camera for clicking picture and performing
-            video kyc
-            <br />
-            <strong>6.</strong> itr e-filing credentials or digital itr returns
-            for last 2 years (for self - employed)
-            <br />
-            <strong>7.</strong> gst portal credentials or digital gst returns
-            for last 1 year (for self - employed)
-            <br />
-            <br />
-            👉
-            <a href="https://dil2.bankofbaroda.co.in/pl/?utm_source=google&utm_medium=paidsearch&utm_campaign=BoB_CRAYONS_PL_pl_always&gclid=CjwKCAjwyaWZBhBGEiwACslQo1xP87MhLZp2oX2sgrcHT2uPcByWxw9ENP7uniYF55a6hRd2jtxe_xoCtVIQAvD_BwE">
-              click here
-            </a>{" "}
-            for applying for personal loan
-            <br />
-            <br />
-            Feel free to talk for further clarification🙂
-          </Fragment>
-        );
-      else if (input.includes("thank")) assistantMessage = "You're welcome😇";
-      if (assistantMessage)
-        setMessages((prev) => [
-          ...prev,
-          {
-            message: assistantMessage,
-            type: "assistant",
-          },
-        ]);
+
+      for (let i = 0; i < questions.length; i++) {
+        let keyPresent = true;
+        const question = questions[i];
+        question.keywords.every((key) => {
+          console.log(key);
+          if (input.includes(key)) {
+            keyPresent = true;
+          } else {
+            keyPresent = true;
+            key.split("*").every((word) => {
+              if (!input.includes(word)) {
+                console.log(word + " not present in " + input);
+                keyPresent = false;
+                return false;
+              }
+              return true; //end loop
+            });
+          }
+          if (keyPresent) return false;
+          return true; //end loop
+        });
+        if (keyPresent) {
+          assistantMessage = question.reply;
+          const utter = new SpeechSynthesisUtterance(question.voice);
+          utter.rate = 1.80;
+          const voice = synth.getVoices()[2];
+          // utter.pitch  = 2;
+          utter.voice = voice;
+          synth.speak(utter);
+          // eslint-disable-next-line no-loop-func
+          setMessages((prev) => [
+            ...prev,
+            {
+              message: assistantMessage,
+              type: "assistant",
+            },
+          ]);
+          break;
+        }
+      }
+      if (assistantMessage) {
+      }
     }
   };
   const toggleMic = (action) => {
     setIsListening(action);
     if (action) Recognition.start();
     else Recognition.stop();
+    //          document.querySelector("audio").play();
   };
-
+  const onPressEnter = (event) => {
+    if (event.code === "Enter") onClickSendButton();
+  };
   return (
     <div ref={containerRef} className="virtualAssistantContainer">
       <Slide
@@ -181,6 +182,7 @@ export default function VirtualAssistant({
           <div className="textInputContainer">
             <div className="textInput">
               <input
+                onKeyDown={onPressEnter}
                 onInput={onTypeMessage}
                 value={messageInput}
                 placeholder={isListening ? "listening..." : "type something..."}
@@ -222,6 +224,7 @@ export default function VirtualAssistant({
           </div>
         </div>
       </Slide>
+      <audio ref={audioRef} src={NotificationAudio} />
     </div>
   );
 }
